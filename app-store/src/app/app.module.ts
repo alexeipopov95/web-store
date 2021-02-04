@@ -10,6 +10,11 @@ import { ContactComponent } from './components/contact/contact.component';
 import { HighlightDirective } from './directives/highlight.directive';
 import { ExponentialPipe } from './pipes/exponential.pipe';
 import { ProductComponent } from './components/product/product.component';
+import { FormsModule } from '@angular/forms';
+import { DemoComponent } from './components/demo/demo.component';
+import { HeaderComponent } from './components/header/header.component';
+import { FooterComponent } from './components/footer/footer.component';
+import { BannerComponent } from './components/banner/banner.component';
 
 @NgModule({
   declarations: [
@@ -21,10 +26,15 @@ import { ProductComponent } from './components/product/product.component';
     HighlightDirective,
     ExponentialPipe,
     ProductComponent,
+    DemoComponent,
+    HeaderComponent,
+    FooterComponent,
+    BannerComponent,
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    FormsModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

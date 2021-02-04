@@ -16,8 +16,7 @@ export class ProductsComponent implements OnInit {
   }
 
   clickProduct(id: number) {
-    console.log('product');
-    console.log(id);
+    console.log('products.components', id);
   }
 
 

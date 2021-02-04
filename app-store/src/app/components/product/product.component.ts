@@ -17,8 +17,8 @@ export class ProductComponent implements OnInit {
   }
 
   addCart() {
-    console.log('añadir al carrito');
+    console.log('añadir al carrito | product.components');
     this.productClicked.emit(this.product.id);
+    console.log(`Emiting value to products.component = [${this.product.id}]`)
   }
-
 }
