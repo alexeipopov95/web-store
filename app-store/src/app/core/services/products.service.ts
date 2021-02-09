@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Product } from '../models/product.model';
+import { Product } from '../../models/product.model';
 
 @Injectable({
   providedIn: 'root'
@@ -58,7 +58,7 @@ export class ProductsService {
   };
 
   getProduct(id:string){
-    return this.products.find(item => id === item.id ); // hasta aca quedamos video 25
-  }
+    return this.products.find(item => id === item.id );
+  };
 
 }

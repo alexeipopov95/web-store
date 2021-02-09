@@ -1,0 +1,78 @@
+Ésta técnica se encarga de fragmentar el archivo generado main.js para que cargue más rápido la aplicación,
+basada en la técnica “divide y vencerás”, cargando siempre el código JavaScript necesario para que la vista funcione de manera adecuada.
+
+Con ésto claro, un pre-requisito fundamental es modularizar la aplicación.
+Un módulo encapsula varios elementos de la aplicación (components, directivas, servicios, etc)
+
+Modularizando home:
+
+Crear archivo home/home.module.ts
+ng g module components/home
+
+Crear carpeta home/components
+Copiar y pegar los componentes que el módulo home va a utilizar
+Eliminar el componente del array de declarations de otros módulos e importarlo al módulo creado
+Crear el routing para el módulo Home. En angular cada módulo debe tener un routing
+cd src/app/components/home
+ng g module home-routing --flat --module=home
+
+
+En seguida que leas la doc. oficial y desarrolles el ejemplo que ahi aparece (Step-by-step setup) desde 0 entenderas.
+La puedes encontrar en: https://angular.io/guide/lazy-loading-ngmodules#step-by-step-setup
+El Profesor tiene un Youtube Channel: y tiene un video que habla sobre el tema, desarrollando especificamente el ejemplo en el enlace.
+Este es el video: https://www.youtube.com/watch?v=KI6xyeyMCSo
+Un ultimo dato, todo lo que hizo el profesor en la clase, se desarrolla automaticamente con el Angular-CLI.
+
+
+
+Lazy Loading
+Es una técnica que ayuda a reducir el peso de las aplicaciones, de esta forma carga mas rápido el proyecto.
+La carga inicial de una pagina no debería ser Lazy ya que necesitamos que se cargue de una, como por ejemplo el Home.
+
+La forma en que funciona es que el navegador realiza un request del html, el cual contiene las instrucciones de carga
+(archivos css, js e imágenes) y cuando identifica los archivos que necesita para cargar el modulo, realiza otro request para pedir dichos archivos.
+Para aplicar esta técnica es necesario modularizar la aplicación.
+
+Cuando ya esta modularizado, hay que definir una ruta inicial en el archivo routing del modulo.
+
+import { HomeComponent } from './components/home/home.component';
+
+const routes: Routes = [
+  {
+    path: '',
+    component: HomeComponent
+  }
+];
+Ahora en el app-routing cargamos la ruta del modulo con loadChildren, de esta forma se carga dinámicamente. De esta forma resolvemos todo un modulo (no un componente únicamente).
+
+const routes: Routes = [
+    {
+      path: '',
+      component: LayoutComponent,
+      children: [
+        {
+          path: '',
+          redirectTo: '/home',
+          pathMatch: 'full',
+        },
+        {
+          path: 'home',
+          loadChildren: () => import('./home/home.module').then(m => m.HomeModule)
+        }
+      ]
+    },
+    {
+      path: '**',
+      component: PageNotFoundComponent
+    }
+  ];
+Ahora tenemos que hacer que la aplicación realice una precarga de los otros módulos de las otras vistas cuando la vista que estamos consultando ya termine. Para realizarlo en el archivo ‘app-routing’ debemos cambiar de estrategia de carga, precargando los archivos con ‘PreloadAllModules’. No olvidar importar ‘PreloadAllModules’
+
+import { Routes, RouterModule, PreloadAllModules } from '@angular/router';
+
+  @NgModule({
+    imports: [RouterModule.forRoot(routes, {
+      preloadingStrategy: PreloadAllModules
+    })],
+    exports: [RouterModule]
+  })
